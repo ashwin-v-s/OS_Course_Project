@@ -1,0 +1,144 @@
+═══════════════════════════════════════════════════════════
+    🎯 QUICK DEMO REFERENCE SHEET - PRINT THIS!
+═══════════════════════════════════════════════════════════
+
+📋 5 PROGRAMS TO SHOW:
+──────────────────────────────────────────────────────────
+
+1️⃣  deadlock_1_simple_two_thread.c
+    Type: AB-BA Pattern (2 threads, 2 locks)
+    Say: "Classic textbook deadlock"
+    Shows: Thread 1 ⇄ Thread 2
+
+2️⃣  deadlock_2_dining_philosophers.c
+    Type: Circular Wait (5 threads, 5 locks)
+    Say: "Famous synchronization problem"
+    Shows: 5-philosopher circular cycle
+
+3️⃣  deadlock_3_resource_allocation.c
+    Type: Resource Graph (3 processes, 3 resources)
+    Say: "Real-world office scenario"
+    Shows: Process A → B → C → A
+
+4️⃣  deadlock_4_nested_locks.c
+    Type: Deep Nesting (2 workers, 4 locks)
+    Say: "Complex enterprise pattern"
+    Shows: Nested lock dependencies
+
+5️⃣  no_deadlock_correct_ordering.c ✅
+    Type: NO DEADLOCK (same order)
+    Say: "Proof of solution - consistent ordering"
+    Shows: ✅ No deadlocks detected
+
+═══════════════════════════════════════════════════════════
+
+🎬 DEMO FLOW (2 MIN PER PROGRAM):
+──────────────────────────────────────────────────────────
+
+For EACH program:
+  1. Upload file (10 sec)
+  2. Compile (20 sec) - show success
+  3. Run (30 sec) - point out it hangs
+  4. Analyze (30 sec) - show cycle
+  5. Explain (30 sec) - what this teaches
+
+Total: 10 minutes for all 5
+
+═══════════════════════════════════════════════════════════
+
+🎤 KEY PHRASES TO USE:
+──────────────────────────────────────────────────────────
+
+Opening:
+"Ma'am, I'll demonstrate 5 different deadlock patterns"
+
+For each deadlock:
+"Notice how it hangs - that's the deadlock"
+"Our DFS finds the cycle: Thread X → Y → X"
+"This is prevented by consistent lock ordering"
+
+For Program 5:
+"This uses SAME lock order - no deadlock!"
+"Our system correctly reports: No deadlocks ✅"
+
+═══════════════════════════════════════════════════════════
+
+📊 WHAT OUTPUT SHOWS:
+──────────────────────────────────────────────────────────
+
+Event Stream:
+- Timeline of lock operations
+- Shows who got which lock when
+
+Cycle Detection:
+- Mathematical proof of deadlock
+- Shows circular dependency path
+
+Thread Status:
+- What each thread owns
+- What each thread wants
+- Who blocks whom
+
+Recommendation:
+- How to fix (consistent ordering)
+
+═══════════════════════════════════════────────────────────
+
+❓ IF TEACHER ASKS:
+──────────────────────────────────────────────────────────
+
+"What does timestamp mean?"
+→ "Time in microseconds when operation happened"
+
+"What is lock address?"
+→ "Memory address of mutex variable"
+
+"How do you detect cycle?"
+→ "DFS graph traversal - finds circular path"
+
+"Does it work for 10 threads?"
+→ "Yes! Scales to any number. O(V+E) complexity"
+
+"Why these 5 cases?"
+→ "Cover main deadlock types from OS textbook"
+
+═══════════════════════════════════════════════════════════
+
+✅ PRE-DEMO CHECKLIST:
+──────────────────────────────────────────────────────────
+
+[ ] Server running: python3 simple_server.py
+[ ] Browser open: http://localhost:5000
+[ ] All 5 files accessible in wrapper/ folder
+[ ] Read 5_DEMO_PROGRAMS.md once
+[ ] Know which program shows what
+[ ] Can explain each in 30 seconds
+
+═══════════════════════════════════════════════════════════
+
+🎯 CONFIDENCE BOOSTERS:
+──────────────────────────────────────────────────────────
+
+✅ System is tested (148 tests pass)
+✅ Programs are simple and clear
+✅ Output is easy to explain
+✅ You have 5 diverse examples
+✅ You have backup (terminal version)
+✅ You understand the theory
+
+═══════════════════════════════════════════════════════════
+
+💤 TONIGHT:
+──────────────────────────────────────────────────────────
+
+1. Read 5_DEMO_PROGRAMS.md (10 min)
+2. Test one program flow (5 min)
+3. SLEEP! (8 hours)
+
+═══════════════════════════════════════════════════════════
+
+🎉 YOU'VE GOT 5 DIFFERENT CASES!
+🚀 YOU'RE COMPLETELY READY!
+💤 NOW GO SLEEP!
+
+Good luck tomorrow! 🎯
