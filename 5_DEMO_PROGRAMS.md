@@ -1,4 +1,4 @@
-# 🎬 **5 DIFFERENT DEADLOCK PROGRAMS FOR DEMO**
+# 🎬 **6 DIFFERENT DEADLOCK PROGRAMS FOR DEMO**
 
 ---
 
@@ -379,3 +379,145 @@ ls -la deadlock_*.c no_deadlock_*.c
 ```
 
 **All ready to upload and demo! 🎉**
+
+
+---
+
+## **PROGRAM 6: Three-Thread Cycle (A→B→C→A)** 🔄
+
+### **File:** `deadlock_3thread_cycle.c`
+
+### **Type:** Classic 3-lock, 3-thread circular deadlock
+
+### **Scenario:**
+```
+Thread A: Holds Lock A, Wants Lock B
+Thread B: Holds Lock B, Wants Lock C
+Thread C: Holds Lock C, Wants Lock A
+```
+
+### **What Happens:**
+- Thread A acquires Lock A
+- Thread B acquires Lock B
+- Thread C acquires Lock C
+- Thread A tries Lock B (held by B) ⏳
+- Thread B tries Lock C (held by C) ⏳
+- Thread C tries Lock A (held by A) ⏳
+- **THREE-WAY CIRCULAR DEADLOCK!** 🚨
+
+### **What to Say:**
+> "Ma'am, this is the pure 3-thread cycle:
+> - Each thread holds one lock
+> - Each thread wants the next thread's lock
+> - Forms perfect cycle: A → B → C → A
+> - All three stuck waiting
+> 
+> This demonstrates our DFS algorithm can detect cycles longer than 2 threads.
+> The wait-for graph forms a triangle where each vertex depends on the next."
+
+### **Demo Steps:**
+1. Upload `deadlock_3thread_cycle.c`
+2. Compile
+3. Run (all 3 threads hang)
+4. Analyze: Shows Thread 3001 → 3002 → 3003 → 3001
+
+**Time:** 2 minutes
+
+**Visual to Draw:**
+```
+Draw triangle on board:
+
+    Thread A
+       ↓
+    wants B
+       ↓
+    Thread B
+       ↓
+    wants C
+       ↓
+    Thread C
+       ↓
+    wants A
+       ↑_____↓
+    (CYCLE!)
+```
+
+### **Why This Is Important:**
+> "Ma'am, this is different from Program 2 (Dining Philosophers):
+> - Simpler: Just 3 threads, 3 locks (not 5)
+> - Clearer: Pure cycle structure (not mixed dependencies)
+> - Textbook: This exact pattern appears in OS theory
+> 
+> It proves our algorithm handles N-thread cycles where N > 2."
+
+---
+
+## 📊 **UPDATED COMPARISON TABLE:**
+
+| # | Program | Threads | Locks | Pattern | Result | Key Learning |
+|---|---------|---------|-------|---------|--------|--------------|
+| **1** | Simple | 2 | 2 | AB-BA | 🚨 DEADLOCK | Basic circular wait |
+| **2** | Dining Phil | 5 | 5 | Circular | 🚨 DEADLOCK | Multi-thread cycle |
+| **3** | Resources | 3 | 3 | Triangle | 🚨 DEADLOCK | Resource competition |
+| **4** | Nested | 2 | 4 | Complex | 🚨 DEADLOCK | Deep nesting issues |
+| **5** | Correct | 2 | 2 | Ordered | ✅ NO DEADLOCK | Solution works! |
+| **6** | 3-Thread | 3 | 3 | A→B→C→A | 🚨 DEADLOCK | Pure 3-way cycle |
+
+---
+
+## 🎯 **UPDATED DEMO STRATEGY (12 MINUTES TOTAL):**
+
+### **Order to Show:**
+
+1. **Program 1** (2 min) - Simple 2-thread
+2. **Program 5** (2 min) - Solution
+3. **Program 6** (2 min) - Pure 3-thread cycle ⭐ NEW!
+4. **Program 2** (2 min) - Complex 5-thread
+5. **Program 3** (2 min) - Real-world resources
+6. **Program 4** (2 min) - Deep nesting
+
+### **Why This Order:**
+- Start simple (2 threads)
+- Show solution
+- **Show 3-thread as stepping stone to complexity**
+- Then show 5-thread
+- Then show variations
+
+---
+
+## 💡 **WHEN TO USE PROGRAM 6:**
+
+**Use Program 6 when teacher asks:**
+- "Does it work for 3 threads?"
+- "Can you show a pure cycle?"
+- "What about more than 2 threads?"
+- "Is there a simpler multi-thread example than dining philosophers?"
+
+**Your Answer:**
+> "Yes ma'am! Let me show you a pure 3-thread cycle. Thread A → B → C → A. Perfect triangle!"
+
+---
+
+## 🎓 **THEORETICAL EXPLANATION FOR PROGRAM 6:**
+
+**If teacher asks: "Explain this mathematically"**
+
+**Your Answer:**
+> "Ma'am, in graph theory:
+> - **Vertices** = Threads {A, B, C}
+> - **Edges** = Wait-for relationships
+> - Edge A→B means: A waits for lock held by B
+> 
+> **Our graph:**
+> - A → B (A waits for B's lock)
+> - B → C (B waits for C's lock)  
+> - C → A (C waits for A's lock)
+> 
+> **DFS traversal:**
+> - Start at A, visit B, visit C
+> - Try to visit A again → Already in path!
+> - **Cycle detected!** = Deadlock proven!
+> 
+> This is exactly how our algorithm works - mathematical proof via cycle detection."
+
+---
