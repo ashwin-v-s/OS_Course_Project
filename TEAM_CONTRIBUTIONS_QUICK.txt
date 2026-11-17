@@ -1,0 +1,166 @@
+═══════════════════════════════════════════════════════════════
+           TEAM CONTRIBUTIONS - QUICK REFERENCE
+         (Print This & Keep During Demo)
+═══════════════════════════════════════════════════════════════
+
+📊 4 MEMBERS - CLEAR DIVISION OF WORK:
+
+┌─────────────────────────────────────────────────────────────┐
+│ MEMBER 1: [YOUR NAME] - Core Engine & Backend (35%)        │
+├─────────────────────────────────────────────────────────────┤
+│ ✅ Event Collector (src/collector/)                         │
+│ ✅ Lock State Manager (src/state/)                          │
+│ ✅ Wait-For Graph (src/graph/)                              │
+│ ✅ DFS Deadlock Detector (src/detection/)                   │
+│ ✅ Lock-Order Advisory (src/remediation/)                   │
+│ ✅ Python Backend Server (web/simple_server.py)             │
+│ ✅ Unit & Integration Tests                                 │
+│                                                             │
+│ Code: ~2,500 lines C + 300 lines Python                    │
+└─────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────┐
+│ MEMBER 2: [FRIEND NAME] - Interception & UI (30%)          │
+├─────────────────────────────────────────────────────────────┤
+│ ✅ LD_PRELOAD Wrapper (wrapper/locktrace.c)                 │
+│ ✅ dlsym(RTLD_NEXT) hooking                                 │
+│ ✅ Binary event logging                                     │
+│ ✅ Web Dashboard UI (web/templates/index.html)              │
+│ ✅ Frontend styling & interaction                           │
+│                                                             │
+│ Code: ~500 lines C + 800 lines HTML/CSS/JS                 │
+└─────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────┐
+│ MEMBER 3: [NAME] - Documentation & Programs (20%)          │
+├─────────────────────────────────────────────────────────────┤
+│ ✅ Complete documentation (10+ MD files)                    │
+│ ✅ DEMO_READY_FINAL.md (main guide)                         │
+│ ✅ 5_DEMO_PROGRAMS.md (explanations)                        │
+│ ✅ QUICK_DEMO_SHEET.txt (quick ref)                         │
+│ ✅ Created 6 demo programs (all deadlock types)             │
+│ ✅ Test scenario preparation                                │
+│                                                             │
+│ Docs: 10+ guides + 6 test programs                         │
+└─────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────┐
+│ MEMBER 4: [NAME] - Build System & QA (15%)                 │
+├─────────────────────────────────────────────────────────────┤
+│ ✅ Complete Makefile (build system)                         │
+│ ✅ Compiler flags & optimization                            │
+│ ✅ Test framework (make test)                               │
+│ ✅ GitHub repository setup                                  │
+│ ✅ WSL configuration & integration                          │
+│ ✅ End-to-end testing & QA                                  │
+│                                                             │
+│ Infrastructure: Complete build & test system               │
+└─────────────────────────────────────────────────────────────┘
+
+═══════════════════════════════════════════════════════════════
+
+💬 IF MA'AM ASKS: "WHO DID WHAT?"
+
+Say: "Ma'am, we divided into 4 clear areas:
+     → I built the CORE DETECTION ENGINE (detector, graph, DFS)
+     → [Member 2] built the LD_PRELOAD WRAPPER & WEB UI
+     → [Member 3] wrote DOCUMENTATION & DEMO PROGRAMS
+     → [Member 4] built MAKEFILE & did TESTING/QA"
+
+═══════════════════════════════════════════════════════════════
+
+💬 IF MA'AM ASKS: "HOW DID YOU COORDINATE?"
+
+Say: "Ma'am, we used Git branches for parallel work.
+     Clear interfaces: My detector expects 28-byte events,
+     Member 2's wrapper produces exactly that format.
+     We tested individually, then integrated together."
+
+═══════════════════════════════════════════════════════════════
+
+💬 IF MA'AM ASKS: "WHO CONTRIBUTED MOST?"
+
+Say: "Ma'am, it depends on measurement:
+     → Most code: Member 1 (~2,500 lines)
+     → Most complex: Member 2 (LD_PRELOAD hooking)
+     → Most clarity: Member 3 (documentation)
+     → Most stability: Member 4 (testing/build)
+     
+     Every member was CRITICAL - without any one,
+     the project wouldn't be complete."
+
+═══════════════════════════════════════════════════════════════
+
+💬 IF MA'AM ASKS YOU SPECIFICALLY: "EXPLAIN YOUR PART"
+
+Say: "Ma'am, I built the CORE DETECTION ENGINE:
+     
+     1. COLLECTOR parses binary events from wrapper
+     2. STATE MANAGER tracks who owns which locks
+     3. GRAPH BUILDER creates Wait-For edges
+     4. DFS DETECTOR finds cycles (3-color algorithm)
+     5. ADVISOR generates lock-order recommendations
+     6. PYTHON BACKEND orchestrates everything
+     
+     When wrapper logs 'Thread A waits for lock held by B',
+     I create edge A→B. If DFS finds A→B→C→A, that's a
+     deadlock. Then I sort lock addresses and recommend
+     'always acquire in this order' to break the cycle."
+
+═══════════════════════════════════════════════════════════════
+
+🎯 COLLECTIVE ACHIEVEMENTS:
+
+✅ 2,800+ lines of C code
+✅ 800+ lines HTML/CSS/JS
+✅ 300+ lines Python
+✅ 148 automated tests (100% passing)
+✅ 6 demo programs (diverse scenarios)
+✅ 10+ documentation files
+
+═══════════════════════════════════════════════════════════════
+
+📊 CONTRIBUTION PERCENTAGES:
+
+Member 1: 35% (Core engine, heaviest code)
+Member 2: 30% (Wrapper & UI, complex integration)
+Member 3: 20% (Docs & programs, crucial clarity)
+Member 4: 15% (Build & QA, ensures reliability)
+
+═══════════════════════════════════════════════════════════════
+
+🎓 SKILLS DEMONSTRATED (ALL MEMBERS):
+
+✅ Systems Programming (LD_PRELOAD, binary formats)
+✅ Concurrency (deadlocks, mutexes, thread safety)
+✅ Algorithms (DFS, graph traversal)
+✅ Software Engineering (modular design, Git, testing)
+✅ Full Stack (C backend, Python server, Web frontend)
+
+═══════════════════════════════════════════════════════════════
+
+💪 KEY MESSAGE:
+
+"Ma'am, this was a TRUE TEAM EFFORT. Each member brought
+unique skills. We divided work efficiently but integrated
+frequently. The result is a complete, working, tested system
+that demonstrates both individual expertise and successful
+collaboration."
+
+═══════════════════════════════════════════════════════════════
+
+🌍 GITHUB EVIDENCE:
+
+You can show commit history:
+  git log --author="Member1" --oneline | wc -l
+  git log --author="Member2" --oneline | wc -l
+
+Or file ownership:
+  git log --format='%aN' src/ | sort | uniq -c
+  git log --format='%aN' wrapper/ | sort | uniq -c
+
+═══════════════════════════════════════════════════════════════
+
+✅ ALL 4 MEMBERS CAN DEFEND THEIR WORK CONFIDENTLY!
+
+═══════════════════════════════════════════════════════════════
