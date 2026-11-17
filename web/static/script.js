@@ -208,7 +208,14 @@ document.addEventListener('DOMContentLoaded', () => {
    1. Upload
 ═══════════════════════════════════════════════════════ */
 async function uploadFile() {
-  if (!state.selectedFile) return;
+  console.log('[DEBUG] uploadFile called');
+  console.log('[DEBUG] state.selectedFile:', state.selectedFile);
+  
+  if (!state.selectedFile) {
+    console.log('[DEBUG] No file selected!');
+    showToast('Please select a file first', 'error');
+    return;
+  }
 
   setStatus('Uploading…', 'busy');
   lockAllControls();
@@ -219,6 +226,8 @@ async function uploadFile() {
 
   const formData = new FormData();
   formData.append('file', state.selectedFile);
+  
+  console.log('[DEBUG] Sending upload request to:', `${API}/upload`);
 
   try {
     const res = await fetch(`${API}/upload`, {
@@ -226,7 +235,12 @@ async function uploadFile() {
       body: formData,
       mode: 'cors',
     });
+    
+    console.log('[DEBUG] Response status:', res.status);
+    
     const data = await res.json();
+    console.log('[DEBUG] Response data:', data);
+    
     termSpinnerRemove();
 
     if (data.success) {
@@ -240,6 +254,7 @@ async function uploadFile() {
       throw new Error(data.error || data.output || 'Upload failed');
     }
   } catch (err) {
+    console.error('[DEBUG] Upload error:', err);
     termSpinnerRemove();
     termLine(`✗ Upload error: ${err.message}`, 'terminal-error');
     showUploadStatus(`Error: ${err.message}`, 'error');
@@ -537,3 +552,22 @@ function escapeHtml(str) {
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
 }
+
+/* ═══════════════════════════════════════════════════════
+   Make functions globally accessible for HTML onclick
+═══════════════════════════════════════════════════════ */
+window.onFileSelected = onFileSelected;
+window.uploadFile = uploadFile;
+window.compileProgram = compileProgram;
+window.runProgram = runProgram;
+window.analyzeDeadlock = analyzeDeadlock;
+window.copyTerminal = copyTerminal;
+window.resetAll = resetAll;
+
+console.log('[INIT] Functions registered globally:', {
+  onFileSelected: typeof window.onFileSelected,
+  uploadFile: typeof window.uploadFile,
+  compileProgram: typeof window.compileProgram,
+  runProgram: typeof window.runProgram,
+  analyzeDeadlock: typeof window.analyzeDeadlock
+});
