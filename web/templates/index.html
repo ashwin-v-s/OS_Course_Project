@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Deadlock Detector</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container-fluid">
+        <!-- FRIEND: BUILD THE COMPLETE UI HERE -->
+        <!-- This is just a placeholder! -->
+        
+        <header class="text-center py-4">
+            <h1>🔍 Live Deadlock Detector</h1>
+            <p class="lead">Runtime Deadlock Analysis System</p>
+        </header>
+
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                
+                <!-- File Upload Section -->
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h5>📁 Upload C Program</h5>
+                    </div>
+                    <div class="card-body">
+                        <input type="file" id="fileInput" accept=".c" class="form-control mb-2">
+                        <button onclick="uploadFile()" class="btn btn-primary">Upload</button>
+                        <div id="uploadStatus" class="mt-2"></div>
+                    </div>
+                </div>
+
+                <!-- Control Panel -->
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h5>🎮 Control Panel</h5>
+                    </div>
+                    <div class="card-body">
+                        <button onclick="compileProgram()" class="btn btn-success me-2" id="compileBtn" disabled>
+                            Compile Program
+                        </button>
+                        <button onclick="runProgram()" class="btn btn-warning me-2" id="runBtn" disabled>
+                            Run with Wrapper
+                        </button>
+                        <button onclick="analyzeDeadlock()" class="btn btn-danger" id="analyzeBtn" disabled>
+                            Analyze Deadlock
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Terminal Output -->
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h5>📟 Terminal Output</h5>
+                    </div>
+                    <div class="card-body">
+                        <pre id="terminalOutput" class="terminal-output">Waiting for operation...</pre>
+                    </div>
+                </div>
+
+                <!-- Analysis Result -->
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h5>🔍 Deadlock Analysis</h5>
+                    </div>
+                    <div class="card-body">
+                        <pre id="analysisResult" class="analysis-output">No analysis yet...</pre>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

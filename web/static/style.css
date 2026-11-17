@@ -1,0 +1,140 @@
+/* Live Deadlock Detector - Web UI Styles */
+
+body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+header {
+    background: white;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    color: #667eea;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+header .lead {
+    color: #666;
+    margin-bottom: 0;
+}
+
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 10px 10px 0 0 !important;
+    font-weight: bold;
+}
+
+.card-header h5 {
+    margin: 0;
+}
+
+.terminal-output, .analysis-output {
+    background: #1e1e1e;
+    color: #00ff00;
+    padding: 15px;
+    border-radius: 5px;
+    min-height: 150px;
+    max-height: 400px;
+    overflow-y: auto;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.analysis-output {
+    color: #ffffff;
+}
+
+.btn {
+    padding: 10px 20px;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: all 0.3s;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.spinner-border {
+    width: 1rem;
+    height: 1rem;
+    border-width: 0.15em;
+    margin-right: 5px;
+}
+
+#uploadStatus {
+    font-weight: bold;
+}
+
+.success-text {
+    color: #28a745;
+}
+
+.error-text {
+    color: #dc3545;
+}
+
+.deadlock-detected {
+    color: #ff0000;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.no-deadlock {
+    color: #00ff00;
+    font-weight: bold;
+}
+
+/* Scrollbar styling */
+.terminal-output::-webkit-scrollbar,
+.analysis-output::-webkit-scrollbar {
+    width: 8px;
+}
+
+.terminal-output::-webkit-scrollbar-track,
+.analysis-output::-webkit-scrollbar-track {
+    background: #2d2d2d;
+}
+
+.terminal-output::-webkit-scrollbar-thumb,
+.analysis-output::-webkit-scrollbar-thumb {
+    background: #666;
+    border-radius: 4px;
+}
+
+.terminal-output::-webkit-scrollbar-thumb:hover,
+.analysis-output::-webkit-scrollbar-thumb:hover {
+    background: #888;
+}
+
+/* Loading animation */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.loading {
+    animation: pulse 1.5s ease-in-out infinite;
+}
