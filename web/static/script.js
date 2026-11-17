@@ -9,10 +9,10 @@
    State
 ═══════════════════════════════════════════════════════ */
 const state = {
-  selectedFile:    null,
+  selectedFile: null,
   uploadedFilename: null,
-  compiled:        false,
-  ran:             false,
+  compiled: false,
+  ran: false,
 };
 
 const API = 'http://localhost:5000';
@@ -20,11 +20,11 @@ const API = 'http://localhost:5000';
 /* ═══════════════════════════════════════════════════════
    DOM helpers
 ═══════════════════════════════════════════════════════ */
-const $  = (id) => document.getElementById(id);
+const $ = (id) => document.getElementById(id);
 const el = (tag, cls, html) => {
   const e = document.createElement(tag);
-  if (cls)  e.className   = cls;
-  if (html) e.innerHTML   = html;
+  if (cls) e.className = cls;
+  if (html) e.innerHTML = html;
   return e;
 };
 
@@ -189,6 +189,19 @@ document.addEventListener('DOMContentLoaded', () => {
       showToast('Please drop a .c file', 'error');
     }
   });
+
+  // ── Backend health check ──────────────────────────────
+  try {
+    const res = await fetch(`${API}/health`, { mode: 'cors' });
+    const data = await res.json();
+    if (data.status === 'ok') {
+      termLine('✓ Backend connected (http://localhost:5000)', 'terminal-success');
+    }
+  } catch {
+    termLine('⚠  Backend not reachable — start: python3 app.py', 'terminal-warn');
+    showToast('Backend offline — start app.py', 'error');
+    setStatus('Backend offline', 'error');
+  }
 });
 
 /* ═══════════════════════════════════════════════════════
@@ -208,10 +221,10 @@ async function uploadFile() {
   formData.append('file', state.selectedFile);
 
   try {
-    const res  = await fetch(`${API}/upload`, {
+    const res = await fetch(`${API}/upload`, {
       method: 'POST',
-      body:   formData,
-      mode:   'cors',
+      body: formData,
+      mode: 'cors',
     });
     const data = await res.json();
     termSpinnerRemove();
@@ -253,11 +266,9 @@ async function compileProgram() {
   termSpinner('Compiling with gcc -pthread…');
 
   try {
-    const res  = await fetch(`${API}/compile`, {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ filename: state.uploadedFilename }),
-      mode:    'cors',
+    const res = await fetch(`${API}/compile`, {
+      method: 'POST',
+      mode: 'cors',
     });
     const data = await res.json();
     termSpinnerRemove();
@@ -297,11 +308,9 @@ async function runProgram() {
   termSpinner('Running program — waiting for deadlock…');
 
   try {
-    const res  = await fetch(`${API}/run`, {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ filename: state.uploadedFilename }),
-      mode:    'cors',
+    const res = await fetch(`${API}/run`, {
+      method: 'POST',
+      mode: 'cors',
     });
     const data = await res.json();
     termSpinnerRemove();
@@ -349,11 +358,9 @@ async function analyzeDeadlock() {
     </div>`;
 
   try {
-    const res  = await fetch(`${API}/analyze`, {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({}),
-      mode:    'cors',
+    const res = await fetch(`${API}/analyze`, {
+      method: 'POST',
+      mode: 'cors',
     });
     const data = await res.json();
     termSpinnerRemove();
@@ -385,8 +392,8 @@ function renderAnalysis(data) {
     // ── DEADLOCK DETECTED ──────────────────────────────────
     termLine('🚨 DEADLOCK DETECTED', 'terminal-deadlock');
 
-    const cycleHtml  = buildCycleHtml(data.output);
-    const recHtml    = buildRecommendationHtml(data.output);
+    const cycleHtml = buildCycleHtml(data.output);
+    const recHtml = buildRecommendationHtml(data.output);
 
     container.innerHTML = `
       <div class="analysis-deadlock">
@@ -444,7 +451,7 @@ function buildCycleHtml(raw) {
   if (parts.length < 2) return '';
 
   const nodes = parts.map(p => `<span class="cycle-node">${escapeHtml(p)}</span>`);
-  const html  = nodes.join('<span class="cycle-arrow"> → </span>');
+  const html = nodes.join('<span class="cycle-arrow"> → </span>');
 
   return `
     <div class="mt-2 mb-1 small text-muted fw-semibold">
@@ -482,10 +489,10 @@ function copyTerminal() {
    Reset
 ═══════════════════════════════════════════════════════ */
 function resetAll() {
-  state.selectedFile     = null;
+  state.selectedFile = null;
   state.uploadedFilename = null;
-  state.compiled         = false;
-  state.ran              = false;
+  state.compiled = false;
+  state.ran = false;
 
   // Reset file input
   const input = $('fileInput');
@@ -524,9 +531,9 @@ function resetAll() {
 function escapeHtml(str) {
   if (typeof str !== 'string') return String(str ?? '');
   return str
-    .replace(/&/g,  '&amp;')
-    .replace(/</g,  '&lt;')
-    .replace(/>/g,  '&gt;')
-    .replace(/"/g,  '&quot;')
-    .replace(/'/g,  '&#39;');
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }

@@ -1,23 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Live Deadlock Detector</title>
 
   <!-- Bootstrap 5 CDN -->
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-  />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <!-- Bootstrap Icons -->
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-    rel="stylesheet"
-  />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
   <!-- Custom styles -->
-  <link rel="stylesheet" href="/static/style.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
+
 <body>
 
   <!-- ═══════════════════════════════════════════
@@ -62,23 +58,13 @@
             </p>
 
             <!-- Drop zone -->
-            <div
-              class="drop-zone mb-3"
-              id="dropZone"
-              onclick="document.getElementById('fileInput').click()"
-            >
+            <div class="drop-zone mb-3" id="dropZone" onclick="document.getElementById('fileInput').click()">
               <i class="bi bi-cloud-upload drop-zone-icon"></i>
               <div class="drop-zone-text">Click or drag &amp; drop</div>
               <div class="drop-zone-hint">.c files only</div>
             </div>
 
-            <input
-              type="file"
-              id="fileInput"
-              accept=".c"
-              class="d-none"
-              onchange="onFileSelected(this)"
-            />
+            <input type="file" id="fileInput" accept=".c" class="d-none" onchange="onFileSelected(this)" />
 
             <!-- Selected file display -->
             <div id="selectedFile" class="selected-file d-none">
@@ -86,12 +72,7 @@
               <span id="selectedFileName"></span>
             </div>
 
-            <button
-              class="btn btn-primary w-100 mt-3"
-              id="uploadBtn"
-              onclick="uploadFile()"
-              disabled
-            >
+            <button class="btn btn-primary w-100 mt-3" id="uploadBtn" onclick="uploadFile()" disabled>
               <i class="bi bi-upload me-2"></i>Upload File
             </button>
 
@@ -110,12 +91,7 @@
             <div class="control-step">
               <div class="step-number">1</div>
               <div class="flex-grow-1">
-                <button
-                  class="btn btn-control btn-compile w-100"
-                  id="compileBtn"
-                  onclick="compileProgram()"
-                  disabled
-                >
+                <button class="btn btn-control btn-compile w-100" id="compileBtn" onclick="compileProgram()" disabled>
                   <i class="bi bi-hammer me-2"></i>Compile Program
                 </button>
                 <div class="step-hint">Compiles with <code>gcc -pthread</code></div>
@@ -125,12 +101,7 @@
             <div class="control-step">
               <div class="step-number">2</div>
               <div class="flex-grow-1">
-                <button
-                  class="btn btn-control btn-run w-100"
-                  id="runBtn"
-                  onclick="runProgram()"
-                  disabled
-                >
+                <button class="btn btn-control btn-run w-100" id="runBtn" onclick="runProgram()" disabled>
                   <i class="bi bi-play-fill me-2"></i>Run with Wrapper
                 </button>
                 <div class="step-hint">Injects <code>LD_PRELOAD</code> tracer</div>
@@ -140,22 +111,14 @@
             <div class="control-step">
               <div class="step-number">3</div>
               <div class="flex-grow-1">
-                <button
-                  class="btn btn-control btn-analyze w-100"
-                  id="analyzeBtn"
-                  onclick="analyzeDeadlock()"
-                  disabled
-                >
+                <button class="btn btn-control btn-analyze w-100" id="analyzeBtn" onclick="analyzeDeadlock()" disabled>
                   <i class="bi bi-search me-2"></i>Analyze Deadlock
                 </button>
                 <div class="step-hint">DFS cycle detection on wait-for graph</div>
               </div>
             </div>
 
-            <button
-              class="btn btn-outline-secondary btn-sm"
-              onclick="resetAll()"
-            >
+            <button class="btn btn-outline-secondary btn-sm" onclick="resetAll()">
               <i class="bi bi-arrow-counterclockwise me-1"></i>Reset
             </button>
 
@@ -173,11 +136,7 @@
         <div class="card panel-card flex-grow-1">
           <div class="card-header panel-header d-flex align-items-center justify-content-between">
             <span><i class="bi bi-terminal-fill me-2"></i>Terminal Output</span>
-            <button
-              class="btn btn-sm btn-outline-secondary copy-btn"
-              onclick="copyTerminal()"
-              title="Copy output"
-            >
+            <button class="btn btn-sm btn-outline-secondary copy-btn" onclick="copyTerminal()" title="Copy output">
               <i class="bi bi-clipboard"></i>
             </button>
           </div>
@@ -187,10 +146,10 @@
                 ┌─────────────────────────────────────┐
               </div>
               <div class="terminal-line terminal-welcome">
-                │  Live Deadlock Detector v1.0        │
+                │ Live Deadlock Detector v1.0 │
               </div>
               <div class="terminal-line terminal-welcome">
-                │  Upload a .c file to begin.         │
+                │ Upload a .c file to begin. │
               </div>
               <div class="terminal-line terminal-welcome">
                 └─────────────────────────────────────┘
@@ -222,6 +181,7 @@
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <!-- App logic -->
-  <script src="/static/script.js"></script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
+
 </html>
