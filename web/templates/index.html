@@ -1,79 +1,187 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Deadlock Detector</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/static/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live Deadlock Detector</title>
+
+  <!-- Bootstrap 5 CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <!-- Custom styles -->
+  <link rel="stylesheet" href="/static/style.css" />
 </head>
+
 <body>
-    <div class="container-fluid">
-        <!-- FRIEND: BUILD THE COMPLETE UI HERE -->
-        <!-- This is just a placeholder! -->
-        
-        <header class="text-center py-4">
-            <h1>🔍 Live Deadlock Detector</h1>
-            <p class="lead">Runtime Deadlock Analysis System</p>
-        </header>
 
-        <div class="row">
-            <div class="col-md-8 mx-auto">
-                
-                <!-- File Upload Section -->
-                <div class="card mb-3">
-                    <div class="card-header">
-                        <h5>📁 Upload C Program</h5>
-                    </div>
-                    <div class="card-body">
-                        <input type="file" id="fileInput" accept=".c" class="form-control mb-2">
-                        <button onclick="uploadFile()" class="btn btn-primary">Upload</button>
-                        <div id="uploadStatus" class="mt-2"></div>
-                    </div>
-                </div>
-
-                <!-- Control Panel -->
-                <div class="card mb-3">
-                    <div class="card-header">
-                        <h5>🎮 Control Panel</h5>
-                    </div>
-                    <div class="card-body">
-                        <button onclick="compileProgram()" class="btn btn-success me-2" id="compileBtn" disabled>
-                            Compile Program
-                        </button>
-                        <button onclick="runProgram()" class="btn btn-warning me-2" id="runBtn" disabled>
-                            Run with Wrapper
-                        </button>
-                        <button onclick="analyzeDeadlock()" class="btn btn-danger" id="analyzeBtn" disabled>
-                            Analyze Deadlock
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Terminal Output -->
-                <div class="card mb-3">
-                    <div class="card-header">
-                        <h5>📟 Terminal Output</h5>
-                    </div>
-                    <div class="card-body">
-                        <pre id="terminalOutput" class="terminal-output">Waiting for operation...</pre>
-                    </div>
-                </div>
-
-                <!-- Analysis Result -->
-                <div class="card mb-3">
-                    <div class="card-header">
-                        <h5>🔍 Deadlock Analysis</h5>
-                    </div>
-                    <div class="card-body">
-                        <pre id="analysisResult" class="analysis-output">No analysis yet...</pre>
-                    </div>
-                </div>
-
-            </div>
+  <!-- ═══════════════════════════════════════════
+       HEADER
+  ═══════════════════════════════════════════ -->
+  <header class="app-header">
+    <div class="container-lg">
+      <div class="d-flex align-items-center gap-3">
+        <div class="header-icon">
+          <i class="bi bi-shield-lock-fill"></i>
         </div>
+        <div>
+          <h1 class="mb-0">Live Deadlock Detector</h1>
+          <p class="mb-0 header-subtitle">Runtime Analysis System</p>
+        </div>
+        <div class="ms-auto">
+          <span class="badge status-badge" id="systemStatus">
+            <i class="bi bi-circle-fill me-1"></i>Ready
+          </span>
+        </div>
+      </div>
     </div>
+  </header>
 
-    <script src="/static/script.js"></script>
+  <main class="container-lg py-4">
+    <div class="row g-4">
+
+      <!-- ══════════════════════════════════════
+           LEFT COLUMN  –  Upload + Controls
+      ══════════════════════════════════════ -->
+      <div class="col-lg-4">
+
+        <!-- FILE UPLOAD SECTION -->
+        <div class="card panel-card mb-4">
+          <div class="card-header panel-header">
+            <i class="bi bi-file-earmark-code me-2"></i>File Upload
+          </div>
+          <div class="card-body">
+            <p class="text-muted small mb-3">
+              Select a <code>.c</code> program that uses
+              <code>pthread_mutex</code> locks.
+            </p>
+
+            <!-- Drop zone -->
+            <div class="drop-zone mb-3" id="dropZone" onclick="document.getElementById('fileInput').click()">
+              <i class="bi bi-cloud-upload drop-zone-icon"></i>
+              <div class="drop-zone-text">Click or drag &amp; drop</div>
+              <div class="drop-zone-hint">.c files only</div>
+            </div>
+
+            <input type="file" id="fileInput" accept=".c" class="d-none" onchange="onFileSelected(this)" />
+
+            <!-- Selected file display -->
+            <div id="selectedFile" class="selected-file d-none">
+              <i class="bi bi-file-earmark-check text-success me-1"></i>
+              <span id="selectedFileName"></span>
+            </div>
+
+            <button class="btn btn-primary w-100 mt-3" id="uploadBtn" onclick="uploadFile()" disabled>
+              <i class="bi bi-upload me-2"></i>Upload File
+            </button>
+
+            <!-- Upload status -->
+            <div id="uploadStatus" class="mt-2"></div>
+          </div>
+        </div>
+
+        <!-- CONTROL PANEL -->
+        <div class="card panel-card">
+          <div class="card-header panel-header">
+            <i class="bi bi-terminal me-2"></i>Control Panel
+          </div>
+          <div class="card-body d-grid gap-3">
+
+            <div class="control-step">
+              <div class="step-number">1</div>
+              <div class="flex-grow-1">
+                <button class="btn btn-control btn-compile w-100" id="compileBtn" onclick="compileProgram()" disabled>
+                  <i class="bi bi-hammer me-2"></i>Compile Program
+                </button>
+                <div class="step-hint">Compiles with <code>gcc -pthread</code></div>
+              </div>
+            </div>
+
+            <div class="control-step">
+              <div class="step-number">2</div>
+              <div class="flex-grow-1">
+                <button class="btn btn-control btn-run w-100" id="runBtn" onclick="runProgram()" disabled>
+                  <i class="bi bi-play-fill me-2"></i>Run with Wrapper
+                </button>
+                <div class="step-hint">Injects <code>LD_PRELOAD</code> tracer</div>
+              </div>
+            </div>
+
+            <div class="control-step">
+              <div class="step-number">3</div>
+              <div class="flex-grow-1">
+                <button class="btn btn-control btn-analyze w-100" id="analyzeBtn" onclick="analyzeDeadlock()" disabled>
+                  <i class="bi bi-search me-2"></i>Analyze Deadlock
+                </button>
+                <div class="step-hint">DFS cycle detection on wait-for graph</div>
+              </div>
+            </div>
+
+            <button class="btn btn-outline-secondary btn-sm" onclick="resetAll()">
+              <i class="bi bi-arrow-counterclockwise me-1"></i>Reset
+            </button>
+
+          </div>
+        </div>
+
+      </div><!-- /left column -->
+
+      <!-- ══════════════════════════════════════
+           RIGHT COLUMN  –  Output panels
+      ══════════════════════════════════════ -->
+      <div class="col-lg-8 d-flex flex-column gap-4">
+
+        <!-- TERMINAL OUTPUT -->
+        <div class="card panel-card flex-grow-1">
+          <div class="card-header panel-header d-flex align-items-center justify-content-between">
+            <span><i class="bi bi-terminal-fill me-2"></i>Terminal Output</span>
+            <button class="btn btn-sm btn-outline-secondary copy-btn" onclick="copyTerminal()" title="Copy output">
+              <i class="bi bi-clipboard"></i>
+            </button>
+          </div>
+          <div class="card-body p-0">
+            <div class="terminal" id="terminal">
+              <div class="terminal-line terminal-welcome">
+                ┌─────────────────────────────────────┐
+              </div>
+              <div class="terminal-line terminal-welcome">
+                │ Live Deadlock Detector v1.0 │
+              </div>
+              <div class="terminal-line terminal-welcome">
+                │ Upload a .c file to begin. │
+              </div>
+              <div class="terminal-line terminal-welcome">
+                └─────────────────────────────────────┘
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ANALYSIS RESULT -->
+        <div class="card panel-card">
+          <div class="card-header panel-header">
+            <i class="bi bi-graph-up me-2"></i>Deadlock Analysis
+          </div>
+          <div class="card-body" id="analysisResult">
+            <div class="analysis-placeholder">
+              <i class="bi bi-clock-history analysis-placeholder-icon"></i>
+              <p class="mb-0 text-muted">
+                Run the program first, then click <strong>Analyze Deadlock</strong>.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /right column -->
+
+    </div><!-- /row -->
+  </main>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- App logic -->
+  <script src="/static/script.js"></script>
 </body>
+
 </html>
