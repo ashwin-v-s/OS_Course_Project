@@ -1,0 +1,46 @@
+=== LIVE DEADLOCK DETECTOR - DEMO COMMANDS ===
+
+PART 1: Show program
+--------------------
+cd ~/live-deadlock-detector
+cat wrapper/banking_deadlock.c
+
+PART 2: Compile
+---------------
+gcc wrapper/banking_deadlock.c -pthread -o banking_deadlock
+
+PART 3: Run with wrapper (will hang for 3 seconds, then Ctrl+C)
+----------------------------------------------------------------
+LD_PRELOAD=./liblocktrace.so ./banking_deadlock
+
+PART 4: Check captured events
+------------------------------
+ls -lh lock_events.bin
+
+PART 5: Analyze deadlock
+------------------------
+./build/bin/detector lock_events.bin
+
+PART 6: Run tests
+-----------------
+make test
+
+PART 7: Other scenarios
+-----------------------
+./build/bin/detector scenarios/clean_execution.bin
+./build/bin/detector scenarios/banking_deadlock.bin
+./build/bin/detector scenarios/three_thread_cycle.bin
+
+=== IF TEACHER GIVES YOU A PROGRAM ===
+---------------------------------------
+gcc teacher_program.c -pthread -o teacher_program
+LD_PRELOAD=./liblocktrace.so timeout 3 ./teacher_program
+./build/bin/detector lock_events.bin
+
+=== REBUILD EVERYTHING (if needed) ===
+---------------------------------------
+cd ~/live-deadlock-detector
+make clean
+make
+gcc -shared -fPIC wrapper/locktrace.c -ldl -o liblocktrace.so
+gcc wrapper/banking_deadlock.c -pthread -o banking_deadlock

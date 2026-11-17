@@ -79,4 +79,23 @@ uint64_t ldd_transport_lost_count(void);
  */
 void ldd_transport_set_mock_source(int (*mock_read)(ldd_raw_event_t *));
 
+/*
+ * ldd_transport_init() — initialize transport with binary event file.
+ *
+ * Opens the specified file for reading binary events. For demo/testing
+ * with pre-generated scenario files.
+ *
+ * Returns:
+ *   0   success
+ *  -1   failed to open file
+ */
+int ldd_transport_init(const char *filename);
+
+/*
+ * ldd_transport_close() — close transport and cleanup resources.
+ *
+ * Closes any open file handles. Safe to call multiple times.
+ */
+void ldd_transport_close(void);
+
 #endif /* LDD_TRANSPORT_H */

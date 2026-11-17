@@ -165,3 +165,18 @@ help:
 	@echo "Platform: Linux/WSL with GCC (not MinGW)."
 	@echo "Phase G eBPF tracer requires Ubuntu VM — see docs/SETUP.md."
 	@echo ""
+
+
+# =============================================================================
+# Detector Main Program (for demo scenarios)
+# =============================================================================
+
+DETECTOR_BIN := $(BINDIR)/detector
+
+$(DETECTOR_BIN): src/detector_main.c $(COLLECTOR_SRC) $(STATE_SRC) $(GRAPH_SRC) src/collector/transport_file.c | $(BINDIR)
+	$(CC) $(CFLAGS) $(INCS) $^ -o $@
+	@echo "✓ Built detector: $@"
+
+detector: $(DETECTOR_BIN)
+
+.PHONY: detector
