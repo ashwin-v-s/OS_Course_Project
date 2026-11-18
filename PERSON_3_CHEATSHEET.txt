@@ -1,0 +1,193 @@
+═══════════════════════════════════════════════════════════════
+         PERSON 3: WAIT-FOR GRAPH CONSTRUCTION
+                    (Print & Keep This)
+═══════════════════════════════════════════════════════════════
+
+YOUR COMPONENT: "Ma'am, I handled WAIT-FOR GRAPH construction"
+
+═══════════════════════════════════════════════════════════════
+📦 WHAT YOU BUILT:
+═══════════════════════════════════════════════════════════════
+
+1. WAIT-FOR GRAPH (src/graph/graph.c)
+   
+   struct ldd_graph_edge_t:
+   - from_tid: Waiting thread ID
+   - to_tid: Thread being waited for
+   - lock_addr: Lock they're fighting over
+   
+   Directed graph: A→B means "A waits for lock held by B"
+
+2. EDGE MANAGEMENT
+   - Add edge: When thread waits for owned lock
+   - Remove edge: When thread acquires lock or gives up
+   - Update edge: When ownership changes
+   
+3. SNAPSHOT ISOLATION
+   - Creates immutable copy of graph
+   - Detection runs on snapshot (not live graph)
+   - Prevents race conditions during analysis
+
+═══════════════════════════════════════════════════════════════
+💬 YOUR 30-SECOND PITCH:
+═══════════════════════════════════════════════════════════════
+
+"Ma'am, I built the wait-for graph. Using lock state information,
+I create directed edges: if Thread A waits for lock held by B,
+I add edge A→B. Edges are dynamic - appear when waiting starts,
+disappear when lock acquired. I provide snapshot isolation so
+detection algorithm sees consistent view."
+
+═══════════════════════════════════════════════════════════════
+❓ VIVA QUESTIONS YOU'LL GET:
+═══════════════════════════════════════════════════════════════
+
+Q: Why use a graph for deadlock detection?
+
+A: "Ma'am, deadlock is fundamentally a graph problem. Circular
+   wait condition means cycle in wait-for graph. Graph
+   representation makes detection straightforward using DFS.
+   Visual: A→B→C→A is a cycle."
+
+───────────────────────────────────────────────────────────────
+
+Q: How do you create an edge?
+
+A: "Ma'am, when state manager reports 'Thread A waiting for
+   lock owned by Thread B', I create directed edge A→B.
+   Edge stores from_tid=A, to_tid=B, and lock_addr for
+   debugging."
+
+───────────────────────────────────────────────────────────────
+
+Q: When do you remove edges?
+
+A: "Ma'am, three cases:
+   1. Thread acquires the lock it was waiting for
+   2. Thread exits/terminates
+   3. Lock is released (no longer blocking anyone)
+   
+   Edge removal prevents false cycles."
+
+───────────────────────────────────────────────────────────────
+
+Q: What is snapshot isolation?
+
+A: "Ma'am, active graph keeps changing as threads lock/unlock.
+   I create immutable snapshot - frozen copy at specific moment.
+   DFS runs on this snapshot, seeing consistent state. Without
+   this, graph could change during traversal causing errors."
+
+───────────────────────────────────────────────────────────────
+
+Q: Can a thread have multiple outgoing edges?
+
+A: "Ma'am, theoretically yes if thread waits for multiple locks
+   simultaneously. But in practice, pthread blocks on first lock,
+   so typically 0 or 1 outgoing edge per thread."
+
+═══════════════════════════════════════════════════════════════
+🎯 KEY TECHNICAL TERMS:
+═══════════════════════════════════════════════════════════════
+
+- Directed edge: One-way relationship (A→B)
+- Wait-for graph: Models thread dependencies
+- Adjacency list: Efficient edge storage
+- Snapshot: Immutable copy for analysis
+- Cycle: Circular path (A→B→C→A)
+
+═══════════════════════════════════════════════════════════════
+📂 FILES YOU OWN:
+═══════════════════════════════════════════════════════════════
+
+src/graph/graph.c                (graph construction logic)
+
+═══════════════════════════════════════════════════════════════
+🔥 IF MA'AM GOES DEEP:
+═══════════════════════════════════════════════════════════════
+
+Q: Draw me a deadlock graph
+
+A: "Ma'am, here's a classic 2-thread deadlock:
+   
+   Thread 100 owns Lock A, wants Lock B
+   Thread 200 owns Lock B, wants Lock A
+   
+   Graph:
+   100 ──(wants B)──> 200
+    ↑                  │
+    │                  │
+    └──(wants A)───────┘
+   
+   This forms cycle: 100→200→100. Deadlock!"
+
+───────────────────────────────────────────────────────────────
+
+Q: What data structure do you use?
+
+A: "Ma'am, adjacency list representation:
+   - Array of threads (nodes)
+   - Each thread has list of outgoing edges
+   - Space: O(V+E) where V=threads, E=edges
+   - Lookup: O(1) for adding/removing edges"
+
+───────────────────────────────────────────────────────────────
+
+Q: How do snapshots work internally?
+
+A: "Ma'am, snapshot copies:
+   1. All active threads (nodes)
+   2. All current edges
+   3. Lock addresses for each edge
+   
+   Deep copy ensures original graph can change without
+   affecting snapshot. Snapshot is freed after detection."
+
+───────────────────────────────────────────────────────────────
+
+Q: What if graph becomes huge?
+
+A: "Ma'am, graph size bounded by:
+   - Nodes (V) = number of threads (typically 10-50)
+   - Edges (E) ≤ V (each thread waits for at most one lock)
+   
+   Even 100 threads × 100 edges = ~10KB memory. Trivial."
+
+═══════════════════════════════════════════════════════════════
+📊 EXAMPLE SCENARIO:
+═══════════════════════════════════════════════════════════════
+
+Banking Deadlock:
+
+Time 0:
+  Graph: empty
+
+Time 1: Thread 458 locks Lock 0xAAAA
+  Graph: no edges (no waiting)
+
+Time 2: Thread 459 locks Lock 0xBBBB
+  Graph: no edges
+
+Time 3: Thread 458 wants Lock 0xBBBB (held by 459)
+  Graph: 458 → 459
+
+Time 4: Thread 459 wants Lock 0xAAAA (held by 458)
+  Graph: 458 → 459
+         459 → 458
+  
+  CYCLE DETECTED! 458→459→458
+
+═══════════════════════════════════════════════════════════════
+✅ CONFIDENCE CHECKLIST:
+═══════════════════════════════════════════════════════════════
+
+[ ] I can explain what an edge represents
+[ ] I can draw a simple deadlock graph
+[ ] I understand when edges are added/removed
+[ ] I know what snapshot isolation means
+[ ] I can explain adjacency list
+[ ] I know my file: graph.c
+
+═══════════════════════════════════════════════════════════════
+🚀 YOU GOT THIS! STUDY 2-3 HOURS & YOU'RE READY!
+═══════════════════════════════════════════════════════════════

@@ -1,0 +1,158 @@
+═══════════════════════════════════════════════════════════════
+         PERSON 1: EVENT COLLECTION & BINARY PROTOCOL
+                    (Print & Keep This)
+═══════════════════════════════════════════════════════════════
+
+YOUR COMPONENT: "Ma'am, I handled EVENT COLLECTION and BINARY PROTOCOL"
+
+═══════════════════════════════════════════════════════════════
+📦 WHAT YOU BUILT:
+═══════════════════════════════════════════════════════════════
+
+1. 28-BYTE BINARY EVENT FORMAT (src/common/events.h)
+   
+   struct ldd_event_header_t:
+   - schema_version (1 byte) = 1
+   - event_type (1 byte) = REQ/ACQ/FAIL/REL/EXIT
+   - pid (4 bytes)
+   - tid (4 bytes)
+   - timestamp_ns (8 bytes)
+   - lock_addr (8 bytes)
+   - padding (2 bytes)
+   
+   Total: 28 bytes (compact, fast)
+
+2. EVENT COLLECTOR (src/collector/collector.c)
+   - Reads binary events from lock_events.bin
+   - Validates schema version
+   - Parses raw bytes into typed structures
+   - Handles incomplete reads
+
+3. TRANSPORT LAYER (src/collector/transport_file.c)
+   - File I/O operations
+   - Reads 28-byte chunks
+   - EOF handling
+
+═══════════════════════════════════════════════════════════════
+💬 YOUR 30-SECOND PITCH:
+═══════════════════════════════════════════════════════════════
+
+"Ma'am, I built the event collection system. When the wrapper
+logs a lock operation, it writes a compact 28-byte binary event.
+My collector reads these events from file, validates the schema
+version, and parses them into typed structures that other
+components can use for analysis."
+
+═══════════════════════════════════════════════════════════════
+❓ VIVA QUESTIONS YOU'LL GET:
+═══════════════════════════════════════════════════════════════
+
+Q: Why binary format instead of text?
+
+A: "Ma'am, binary is much faster - no string formatting overhead
+   in the critical path. Text (like JSON/XML) would significantly
+   slow down the target program. Binary keeps logging under
+   1-2 microseconds per event."
+
+───────────────────────────────────────────────────────────────
+
+Q: Why 28 bytes specifically?
+
+A: "Ma'am, it's the minimum size needed for all required fields:
+   1+1+4+4+8+8+2 = 28 bytes. Also aligned for efficient memory
+   access on 64-bit systems."
+
+───────────────────────────────────────────────────────────────
+
+Q: What if file is corrupted?
+
+A: "Ma'am, my collector validates schema version first (must be 1).
+   Then checks minimum payload length. Rejects malformed events
+   gracefully without crashing."
+
+───────────────────────────────────────────────────────────────
+
+Q: What are the 5 event types?
+
+A: "Ma'am:
+   1. LOCK_REQUEST (1) - thread attempts lock
+   2. LOCK_ACQUIRED (2) - lock granted
+   3. LOCK_FAILED (3) - trylock failed
+   4. LOCK_RELEASED (4) - unlock called
+   5. THREAD_EXIT (5) - thread terminating"
+
+───────────────────────────────────────────────────────────────
+
+Q: How does collector know where event starts?
+
+A: "Ma'am, fixed 28-byte size makes framing simple. Read exactly
+   28 bytes, that's one complete event. No delimiters needed."
+
+═══════════════════════════════════════════════════════════════
+🎯 KEY TECHNICAL TERMS:
+═══════════════════════════════════════════════════════════════
+
+- __attribute__((packed)): Prevents compiler padding
+- Schema validation: Ensures version compatibility
+- Framing: Reading complete 28-byte chunks
+- Binary serialization: Converting data to bytes
+- Little-endian: Byte order (LSB first)
+
+═══════════════════════════════════════════════════════════════
+📂 FILES YOU OWN:
+═══════════════════════════════════════════════════════════════
+
+src/common/events.h              (event format definition)
+src/collector/collector.c        (parsing logic)
+src/collector/transport_file.c   (file I/O)
+
+═══════════════════════════════════════════════════════════════
+🔥 IF MA'AM GOES DEEP:
+═══════════════════════════════════════════════════════════════
+
+Q: Show me the struct
+
+A: "Ma'am, here's the exact definition:
+   
+   typedef struct __attribute__((packed)) {
+       uint8_t  schema_version;
+       uint8_t  event_type;
+       uint32_t pid;
+       uint32_t tid;
+       uint64_t timestamp_ns;
+       uint64_t lock_addr;
+       uint8_t  _pad[2];
+   } ldd_event_header_t;
+   
+   The packed attribute ensures no padding between fields."
+
+───────────────────────────────────────────────────────────────
+
+Q: How does wrapper write this?
+
+A: "Ma'am, wrapper creates this struct, fills fields, then
+   writes exactly 28 bytes to file using fwrite(). No
+   serialization library needed - direct memory write."
+
+───────────────────────────────────────────────────────────────
+
+Q: What if event order matters?
+
+A: "Ma'am, events are written sequentially with monotonic
+   timestamps. Collector reads in same order. Timestamp
+   resolves any ambiguity in ordering."
+
+═══════════════════════════════════════════════════════════════
+✅ CONFIDENCE CHECKLIST:
+═══════════════════════════════════════════════════════════════
+
+[ ] I can explain why we use binary format
+[ ] I know all 5 event types
+[ ] I can draw the 28-byte structure
+[ ] I understand __attribute__((packed))
+[ ] I can explain schema validation
+[ ] I know my files: events.h, collector.c, transport_file.c
+
+═══════════════════════════════════════════════════════════════
+🚀 YOU GOT THIS! STUDY 2-3 HOURS & YOU'RE READY!
+═══════════════════════════════════════════════════════════════

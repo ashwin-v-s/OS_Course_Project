@@ -1,0 +1,233 @@
+═══════════════════════════════════════════════════════════════
+         PERSON 4: DEADLOCK DETECTION ALGORITHM (DFS)
+                    (Print & Keep This)
+═══════════════════════════════════════════════════════════════
+
+YOUR COMPONENT: "Ma'am, I handled DEADLOCK DETECTION using DFS"
+
+═══════════════════════════════════════════════════════════════
+📦 WHAT YOU BUILT:
+═══════════════════════════════════════════════════════════════
+
+1. 3-COLOR DFS ALGORITHM (src/detection/deadlock_detector.c)
+   
+   States:
+   - WHITE (0): Unvisited thread
+   - GRAY (1): Currently on recursion stack (visiting)
+   - BLACK (2): Completely explored
+   
+   Algorithm detects back-edges (cycles) in O(V+E) time
+
+2. CYCLE DETECTION
+   - Start DFS from each unvisited thread
+   - Mark current as GRAY (visiting)
+   - Follow outgoing edges
+   - If reach GRAY node → BACK-EDGE → CYCLE → DEADLOCK!
+   - Mark as BLACK when done
+
+3. CYCLE RECONSTRUCTION
+   - Traces back from detected cycle
+   - Builds complete path: Thread A → B → C → A
+   - Records which locks involved
+
+═══════════════════════════════════════════════════════════════
+💬 YOUR 30-SECOND PITCH:
+═══════════════════════════════════════════════════════════════
+
+"Ma'am, I built the deadlock detector using 3-color DFS. I
+traverse the wait-for graph, marking threads as White, Gray,
+or Black. When I encounter a Gray node during traversal, that's
+a back-edge - mathematical proof of a cycle - meaning deadlock
+detected. Then I reconstruct the exact circular path."
+
+═══════════════════════════════════════════════════════════════
+❓ VIVA QUESTIONS YOU'LL GET:
+═══════════════════════════════════════════════════════════════
+
+Q: Why 3 colors instead of 2 (visited/unvisited)?
+
+A: "Ma'am, 2 colors cannot distinguish between:
+   - Cross-edges in DAG (safe, no cycle)
+   - Back-edges (cycle!)
+   
+   GRAY identifies nodes currently on recursion stack.
+   Hitting GRAY proves ancestor reached → back-edge → cycle.
+   
+   Example: A→B→C, A→C (cross-edge, no cycle)
+   vs A→B→A (back-edge, cycle)"
+
+───────────────────────────────────────────────────────────────
+
+Q: Explain the DFS algorithm step by step
+
+A: "Ma'am:
+   1. Mark all threads WHITE (unvisited)
+   2. For each WHITE thread, start DFS
+   3. Mark current thread GRAY (visiting)
+   4. Follow outgoing edge (who waiting for?)
+   5. If target is GRAY → CYCLE FOUND! (back-edge)
+   6. If target is WHITE → recurse
+   7. If target is BLACK → skip (already done)
+   8. Mark current BLACK (visited)
+   
+   Time: O(V+E) where V=threads, E=edges"
+
+───────────────────────────────────────────────────────────────
+
+Q: What is a back-edge?
+
+A: "Ma'am, back-edge is edge pointing to ancestor in current
+   DFS path. Example: traversing A→B→C, then find edge C→A.
+   That's back-edge because A is ancestor (on recursion stack).
+   Back-edge proves cycle exists."
+
+───────────────────────────────────────────────────────────────
+
+Q: Can DFS miss a deadlock?
+
+A: "Ma'am, NO. DFS is complete for cycle detection. If cycle
+   exists in directed graph, DFS guarantees to find it. This
+   is mathematically proven property of DFS algorithm."
+
+───────────────────────────────────────────────────────────────
+
+Q: What if multiple cycles exist?
+
+A: "Ma'am, I detect and report first cycle found. Multiple
+   disjoint cycles are rare in practice (would mean multiple
+   independent deadlocks). Can be extended to find all cycles."
+
+───────────────────────────────────────────────────────────────
+
+Q: Why DFS instead of BFS?
+
+A: "Ma'am, DFS is better for cycle detection because:
+   - Naturally tracks recursion path (current DFS stack)
+   - GRAY color identifies stack members
+   - BFS would need extra bookkeeping to remember paths
+   - DFS is also faster: O(V+E) vs BFS O(V²) for cycles"
+
+═══════════════════════════════════════════════════════════════
+🎯 KEY TECHNICAL TERMS:
+═══════════════════════════════════════════════════════════════
+
+- DFS: Depth-First Search
+- Back-edge: Edge to ancestor in DFS tree
+- Recursion stack: Current path being explored
+- 3-color: WHITE-GRAY-BLACK marking
+- O(V+E): Linear time complexity
+
+═══════════════════════════════════════════════════════════════
+📂 FILES YOU OWN:
+═══════════════════════════════════════════════════════════════
+
+src/detection/deadlock_detector.c   (DFS algorithm)
+
+═══════════════════════════════════════════════════════════════
+🔥 IF MA'AM GOES DEEP:
+═══════════════════════════════════════════════════════════════
+
+Q: Show me DFS on a graph
+
+A: "Ma'am, example:
+   
+   Graph: 1→2, 2→3, 3→1 (cycle)
+   
+   Start DFS from 1:
+   1. Visit 1, mark GRAY, stack=[1]
+   2. Follow edge to 2, mark GRAY, stack=[1,2]
+   3. Follow edge to 3, mark GRAY, stack=[1,2,3]
+   4. Follow edge to 1 → 1 is GRAY! → BACK-EDGE!
+   5. Cycle detected: 1→2→3→1"
+
+───────────────────────────────────────────────────────────────
+
+Q: What is time complexity?
+
+A: "Ma'am, O(V + E) where:
+   - V = number of threads (nodes)
+   - E = number of wait-for edges
+   
+   Each node visited once, each edge checked once.
+   Typical: V=10, E=5 → ~15 operations = microseconds"
+
+───────────────────────────────────────────────────────────────
+
+Q: How do you reconstruct the cycle?
+
+A: "Ma'am, when back-edge found (e.g., C→A), I:
+   1. Start from A (cycle start)
+   2. Follow DFS parent pointers backward
+   3. Record path: A→...→B→C
+   4. Add back-edge: C→A
+   5. Result: complete cycle A→B→C→A
+   
+   Also record lock addresses for each edge."
+
+───────────────────────────────────────────────────────────────
+
+Q: What if graph changes during DFS?
+
+A: "Ma'am, that's why Person 3's snapshot isolation is crucial.
+   DFS runs on immutable snapshot, not live graph. Snapshot
+   guarantees consistent view throughout algorithm execution."
+
+═══════════════════════════════════════════════════════════════
+📊 EXAMPLE TRACE:
+═══════════════════════════════════════════════════════════════
+
+Banking Deadlock Detection:
+
+Graph: 458→459, 459→458
+
+DFS Trace:
+-----------
+Start from 458:
+  458: WHITE → GRAY (stack=[458])
+  Follow edge 458→459:
+    459: WHITE → GRAY (stack=[458,459])
+    Follow edge 459→458:
+      458: Already GRAY! ← BACK-EDGE FOUND!
+      
+🚨 DEADLOCK DETECTED!
+Cycle: 458→459→458
+
+═══════════════════════════════════════════════════════════════
+🎓 COMPARISON: DFS vs OTHER ALGORITHMS
+═══════════════════════════════════════════════════════════════
+
+DFS (our choice):
+  ✅ O(V+E) time
+  ✅ Natural cycle detection
+  ✅ Simple implementation
+  ✅ Low memory (recursion stack)
+
+BFS:
+  ❌ O(V²) for cycles
+  ❌ Needs extra path tracking
+  ❌ More complex
+
+Tarjan's SCC:
+  ✅ O(V+E) time
+  ✅ Finds all cycles
+  ❌ Overkill for our use case
+  ❌ More complex
+
+Floyd's (cycle in linked list):
+  ❌ Only works for single linked list
+  ❌ Not applicable to general graphs
+
+═══════════════════════════════════════════════════════════════
+✅ CONFIDENCE CHECKLIST:
+═══════════════════════════════════════════════════════════════
+
+[ ] I can explain 3-color DFS
+[ ] I understand what back-edge means
+[ ] I can trace DFS on simple graph
+[ ] I know time complexity O(V+E)
+[ ] I can explain why DFS better than BFS
+[ ] I know my file: deadlock_detector.c
+
+═══════════════════════════════════════════════════════════════
+🚀 YOU GOT THIS! STUDY 2-3 HOURS & YOU'RE READY!
+═══════════════════════════════════════════════════════════════

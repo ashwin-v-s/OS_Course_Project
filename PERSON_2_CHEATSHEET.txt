@@ -1,0 +1,168 @@
+═══════════════════════════════════════════════════════════════
+         PERSON 2: LOCK STATE TRACKING & OWNERSHIP
+                    (Print & Keep This)
+═══════════════════════════════════════════════════════════════
+
+YOUR COMPONENT: "Ma'am, I handled LOCK STATE MANAGEMENT"
+
+═══════════════════════════════════════════════════════════════
+📦 WHAT YOU BUILT:
+═══════════════════════════════════════════════════════════════
+
+1. LOCK STATE MANAGER (src/state/lock_state.c)
+   
+   struct ldd_lock_state_t:
+   - lock_addr: Memory address of mutex
+   - owner_tid: Thread that owns it (0 = free)
+   - waiters[16]: Array of waiting thread IDs
+   - waiter_count: Number of threads waiting
+   
+   Tracks up to 256 locks simultaneously
+
+2. OWNERSHIP TRACKING
+   - LOCK_REQUEST: Add to waiters if lock has owner
+   - LOCK_ACQUIRED: Set owner, remove from waiters
+   - LOCK_RELEASED: Clear owner
+   - THREAD_EXIT: Clean up orphaned locks
+
+3. RE-ENTRANCY HANDLING
+   - Same thread can lock same mutex multiple times
+   - Count recursive depth
+   - Only free when unlock count matches lock count
+
+═══════════════════════════════════════════════════════════════
+💬 YOUR 30-SECOND PITCH:
+═══════════════════════════════════════════════════════════════
+
+"Ma'am, I built the lock state manager. As events flow in, I
+track which thread owns which lock and who's waiting. I maintain
+a lock table and waiters list. When a thread exits, I clean up
+orphaned locks to prevent false positives in deadlock detection."
+
+═══════════════════════════════════════════════════════════════
+❓ VIVA QUESTIONS YOU'LL GET:
+═══════════════════════════════════════════════════════════════
+
+Q: What if two threads try to lock same mutex?
+
+A: "Ma'am, only one can own it at a time. First thread becomes
+   owner. Second thread is added to waiters list with status
+   WAITING. This creates potential for wait-for edge in graph."
+
+───────────────────────────────────────────────────────────────
+
+Q: How do you handle thread exit?
+
+A: "Ma'am, when THREAD_EXIT event arrives, I iterate through
+   all locks in the table. If this thread owns any lock, I
+   release it immediately. This prevents stale ownership that
+   could cause false deadlock detection."
+
+───────────────────────────────────────────────────────────────
+
+Q: What's the maximum number of locks?
+
+A: "Ma'am, currently 256 locks (configurable constant). Real
+   programs rarely use more than 10-20 mutexes. 256 is more
+   than sufficient for practical applications."
+
+───────────────────────────────────────────────────────────────
+
+Q: What is re-entrancy?
+
+A: "Ma'am, some mutex types (PTHREAD_MUTEX_RECURSIVE) allow
+   same thread to lock multiple times. I track recursive depth.
+   Thread must unlock same number of times before mutex is
+   truly free. Example: lock-lock-unlock-unlock."
+
+───────────────────────────────────────────────────────────────
+
+Q: How do you find a lock quickly?
+
+A: "Ma'am, I maintain hash table indexed by lock address.
+   Average lookup is O(1). Even with 256 locks, finding the
+   right one takes microseconds."
+
+═══════════════════════════════════════════════════════════════
+🎯 KEY TECHNICAL TERMS:
+═══════════════════════════════════════════════════════════════
+
+- Owner: Thread currently holding the lock
+- Waiters: Threads blocked waiting for this lock
+- Re-entrancy: Same thread locking recursively
+- Orphaned lock: Lock held by exited thread
+- Lock table: Array of lock state structures
+
+═══════════════════════════════════════════════════════════════
+📂 FILES YOU OWN:
+═══════════════════════════════════════════════════════════════
+
+src/state/lock_state.c           (lock tracking logic)
+
+═══════════════════════════════════════════════════════════════
+🔥 IF MA'AM GOES DEEP:
+═══════════════════════════════════════════════════════════════
+
+Q: Show me the state transitions
+
+A: "Ma'am, here's the state machine:
+   
+   FREE (owner=0)
+     ↓ LOCK_ACQUIRED by Thread A
+   OWNED (owner=A, waiters=[])
+     ↓ LOCK_REQUEST by Thread B
+   OWNED (owner=A, waiters=[B])
+     ↓ LOCK_RELEASED by Thread A
+   FREE (owner=0)
+     ↓ LOCK_ACQUIRED by Thread B
+   OWNED (owner=B, waiters=[])"
+
+───────────────────────────────────────────────────────────────
+
+Q: What if waiter array fills up?
+
+A: "Ma'am, waiter array has 16 slots. If 17th thread tries
+   to wait, I return error. In practice, rarely more than 2-3
+   threads wait on same mutex. 16 is safe upper bound."
+
+───────────────────────────────────────────────────────────────
+
+Q: How do you prevent race conditions in your code?
+
+A: "Ma'am, my state manager processes events sequentially
+   from a single-threaded collector. No concurrent modification.
+   Events are timestamped, so order is deterministic."
+
+═══════════════════════════════════════════════════════════════
+📊 EXAMPLE SCENARIO:
+═══════════════════════════════════════════════════════════════
+
+Timeline:
+1. Thread 100 locks mutex 0xAAAA
+   → State: owner=100, waiters=[]
+
+2. Thread 200 requests mutex 0xAAAA
+   → State: owner=100, waiters=[200]
+   → This creates edge 200→100 in graph!
+
+3. Thread 100 unlocks mutex 0xAAAA
+   → State: owner=0, waiters=[]
+
+4. Thread 200 acquires mutex 0xAAAA
+   → State: owner=200, waiters=[]
+   → Edge 200→100 removed!
+
+═══════════════════════════════════════════════════════════════
+✅ CONFIDENCE CHECKLIST:
+═══════════════════════════════════════════════════════════════
+
+[ ] I can explain owner vs waiters
+[ ] I know what re-entrancy means
+[ ] I understand thread exit cleanup
+[ ] I can draw state transitions
+[ ] I know why we track waiters
+[ ] I know my file: lock_state.c
+
+═══════════════════════════════════════════════════════════════
+🚀 YOU GOT THIS! STUDY 2-3 HOURS & YOU'RE READY!
+═══════════════════════════════════════════════════════════════
