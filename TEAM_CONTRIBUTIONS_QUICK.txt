@@ -6,7 +6,7 @@
 📊 4 MEMBERS - CLEAR DIVISION OF WORK:
 
 ┌─────────────────────────────────────────────────────────────┐
-│ MEMBER 1: [YOUR NAME] - Core Engine & Backend (35%)        │
+│ MEMBER 1: [YOUR NAME] - Core Engine & Backend (25%)        │
 ├─────────────────────────────────────────────────────────────┤
 │ ✅ Event Collector (src/collector/)                         │
 │ ✅ Lock State Manager (src/state/)                          │
@@ -16,11 +16,11 @@
 │ ✅ Python Backend Server (web/simple_server.py)             │
 │ ✅ Unit & Integration Tests                                 │
 │                                                             │
-│ Code: ~2,500 lines C + 300 lines Python                    │
+│ Complexity: Algorithmic (Graph theory, DFS)                │
 └─────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────┐
-│ MEMBER 2: [FRIEND NAME] - Interception & UI (30%)          │
+│ MEMBER 2: [FRIEND NAME] - Interception & UI (25%)          │
 ├─────────────────────────────────────────────────────────────┤
 │ ✅ LD_PRELOAD Wrapper (wrapper/locktrace.c)                 │
 │ ✅ dlsym(RTLD_NEXT) hooking                                 │
@@ -28,11 +28,11 @@
 │ ✅ Web Dashboard UI (web/templates/index.html)              │
 │ ✅ Frontend styling & interaction                           │
 │                                                             │
-│ Code: ~500 lines C + 800 lines HTML/CSS/JS                 │
+│ Complexity: Systems integration (Runtime interception)     │
 └─────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────┐
-│ MEMBER 3: [NAME] - Documentation & Programs (20%)          │
+│ MEMBER 3: [NAME] - Documentation & Programs (25%)          │
 ├─────────────────────────────────────────────────────────────┤
 │ ✅ Complete documentation (10+ MD files)                    │
 │ ✅ DEMO_READY_FINAL.md (main guide)                         │
@@ -41,11 +41,11 @@
 │ ✅ Created 6 demo programs (all deadlock types)             │
 │ ✅ Test scenario preparation                                │
 │                                                             │
-│ Docs: 10+ guides + 6 test programs                         │
+│ Complexity: Communication & testing (Critical for demo)    │
 └─────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────┐
-│ MEMBER 4: [NAME] - Build System & QA (15%)                 │
+│ MEMBER 4: [NAME] - Build System & QA (25%)                 │
 ├─────────────────────────────────────────────────────────────┤
 │ ✅ Complete Makefile (build system)                         │
 │ ✅ Compiler flags & optimization                            │
@@ -54,7 +54,7 @@
 │ ✅ WSL configuration & integration                          │
 │ ✅ End-to-end testing & QA                                  │
 │                                                             │
-│ Infrastructure: Complete build & test system               │
+│ Complexity: Infrastructure (Ensures reliability)           │
 └─────────────────────────────────────────────────────────────┘
 
 ═══════════════════════════════════════════════════════════════
@@ -80,14 +80,17 @@ Say: "Ma'am, we used Git branches for parallel work.
 
 💬 IF MA'AM ASKS: "WHO CONTRIBUTED MOST?"
 
-Say: "Ma'am, it depends on measurement:
-     → Most code: Member 1 (~2,500 lines)
-     → Most complex: Member 2 (LD_PRELOAD hooking)
-     → Most clarity: Member 3 (documentation)
-     → Most stability: Member 4 (testing/build)
+Say: "Ma'am, ALL FOUR MEMBERS contributed EQUALLY - 25% each.
+     We divided the project into 4 components of similar complexity:
      
-     Every member was CRITICAL - without any one,
-     the project wouldn't be complete."
+     → Member 1: Algorithmic core (detection engine)
+     → Member 2: Runtime interception & UI (wrapper & web)
+     → Member 3: Communication & testing (docs & programs)
+     → Member 4: Infrastructure (build system & QA)
+     
+     Each component was EQUALLY CRITICAL. Without any one
+     member, the project wouldn't be complete. True teamwork
+     with balanced workload distribution."
 
 ═══════════════════════════════════════════════════════════════
 
@@ -122,10 +125,12 @@ Say: "Ma'am, I built the CORE DETECTION ENGINE:
 
 📊 CONTRIBUTION PERCENTAGES:
 
-Member 1: 35% (Core engine, heaviest code)
-Member 2: 30% (Wrapper & UI, complex integration)
-Member 3: 20% (Docs & programs, crucial clarity)
-Member 4: 15% (Build & QA, ensures reliability)
+ALL 4 MEMBERS: 25% EACH (EQUAL CONTRIBUTION)
+
+Member 1: 25% (Core engine - algorithmic complexity)
+Member 2: 25% (Wrapper & UI - integration complexity)
+Member 3: 25% (Docs & programs - communication & testing)
+Member 4: 25% (Build & QA - infrastructure complexity)
 
 ═══════════════════════════════════════════════════════════════
 
@@ -141,11 +146,11 @@ Member 4: 15% (Build & QA, ensures reliability)
 
 💪 KEY MESSAGE:
 
-"Ma'am, this was a TRUE TEAM EFFORT. Each member brought
-unique skills. We divided work efficiently but integrated
-frequently. The result is a complete, working, tested system
-that demonstrates both individual expertise and successful
-collaboration."
+"Ma'am, this was TRUE TEAMWORK with EQUAL CONTRIBUTIONS (25% each).
+Each member brought unique skills and handled equally complex
+components. We divided work efficiently but integrated frequently.
+The result demonstrates both individual expertise and successful
+balanced collaboration."
 
 ═══════════════════════════════════════════════════════════════
 

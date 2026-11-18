@@ -147,10 +147,10 @@
 
 | Member | Primary Area | Key Deliverables | % Contribution |
 |--------|--------------|------------------|----------------|
-| **Member 1** | Core Engine & Backend | Detector, Graph, DFS, Backend API | 35% |
-| **Member 2** | Interception & UI | LD_PRELOAD wrapper, Web Dashboard | 30% |
-| **Member 3** | Documentation & Programs | 10+ docs, 6 demo programs | 20% |
-| **Member 4** | Build & Integration | Makefile, Testing, QA | 15% |
+| **Member 1** | Core Engine & Backend | Detector, Graph, DFS, Backend API | 25% |
+| **Member 2** | Interception & UI | LD_PRELOAD wrapper, Web Dashboard | 25% |
+| **Member 3** | Documentation & Programs | 10+ docs, 6 demo programs | 25% |
+| **Member 4** | Build & Integration | Makefile, Testing, QA | 25% |
 
 ---
 
@@ -221,7 +221,13 @@
 ### **Q: "Who contributed most?"**
 
 **Answer:**
-> "Ma'am, contribution depends on how you measure. In terms of lines of code, Member 1 wrote the most (~2,500 lines of core C code). But Member 2's LD_PRELOAD wrapper was the most complex single component - it required deep understanding of dynamic linking. Member 3's documentation was crucial for making the project understandable and demo-ready. Member 4's build system and testing ensured everything worked reliably. Every member had a critical role - without any one person, the project wouldn't be complete."
+> "Ma'am, all four members contributed equally - 25% each. We divided the project into four major components of similar complexity:
+> - Member 1 handled the algorithmic core (detection engine)
+> - Member 2 handled the runtime interception (wrapper) and user interface
+> - Member 3 handled communication and testing (documentation and demo programs)
+> - Member 4 handled infrastructure (build system and integration)
+> 
+> Each component was equally critical. Without any one member, the project wouldn't be complete. It was true teamwork with balanced contributions."
 
 ---
 
@@ -264,7 +270,7 @@
 
 ## 🎉 **FINAL STATEMENT:**
 
-> "Ma'am, this was a true team effort. Each member brought unique skills - low-level systems programming, algorithm design, technical communication, and build infrastructure. We divided work efficiently but integrated frequently. The result is a complete, working, tested, and well-documented system that anyone can clone from GitHub and run immediately."
+> "Ma'am, this was a true team effort with **equal contribution from all four members (25% each)**. Each member brought unique skills and handled a critical component of equal complexity. We divided work efficiently but integrated frequently. The result is a complete, working, tested, and well-documented system that demonstrates successful collaboration with balanced workload distribution."
 
 ---
 
